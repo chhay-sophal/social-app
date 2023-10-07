@@ -29,6 +29,9 @@
                   <li class="nav-item">
                     <a class="nav-link" href="#">Profile</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_auth:register' %}">Register</a>
+                  </li>
                 </ul>
                 <form class="d-flex">
                   <input class="form-control me-sm-2" type="search" placeholder="Search">
@@ -39,7 +42,7 @@
         </nav>
     </header>
     
-    <main>
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
     

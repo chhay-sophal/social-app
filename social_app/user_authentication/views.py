@@ -12,6 +12,14 @@ class RegisterView(CreateView):
     template_name = 'user_authentication/register.html'
     success_url = reverse_lazy('login')
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        bio = form.cleaned_data['bio']
+        Profile.objects.create(user=self.object, name=name, email=email, bio=bio)
+        return response
+
 
 class CustomLoginView(LoginView):
     template_name = 'user_authentication/login.html'

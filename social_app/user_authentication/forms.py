@@ -6,9 +6,12 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 
 class RegistrationForm(UserCreationForm):
+    name = forms.CharField()
+    email = forms.EmailField()
+
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2')
+        fields = ('username', 'password1', 'password2', 'name', 'email')
 
 
 class LoginForm(forms.Form):
