@@ -6,29 +6,30 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body style="padding-top: 120px;">
-    <header>
         <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
             <div class="container">
               <a class="navbar-brand" href="#">Social App</a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+              <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarColor01">
+              <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav me-auto">
                   <li class="nav-item">
-                    <a class="nav-link active" href="#">Home
-                      <span class="visually-hidden">(current)</span>
-                    </a>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'core:index' %}active{% endif %}" href="{% url 'core:index' %}">Home
+                          <span class="visually-hidden">(current)</span>
+                      </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Post</a>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'post:view' %}active{% endif %}" href="#">Post</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Friends</a>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'friends:view' %}active{% endif %}" href="#">Friends</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'user_profile:profile' %}">Profile</a>
-                  </li>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'user_profile:profile' %}active{% endif %}" href="{% url 'user_profile:profile' %}">Profile
+                          <span class="visually-hidden">(current)</span>
+                      </a>
+                  </li>                
                   <!-- <li class="nav-item">
                     <a class="nav-link" href="{% url 'user_auth:register' %}">Register</a>
                   </li>
@@ -36,14 +37,13 @@
                     <a class="nav-link" href="{% url 'user_auth:login' %}">Log In</a>
                   </li> -->
                 </ul>
-                <form class="d-flex">
+                <!-- <form class="d-flex">
                   <input class="form-control me-sm-2" type="search" placeholder="Search">
                   <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                </form>
+                </form> -->
               </div>
             </div>
         </nav>
-    </header>
     
     <main class="container">
         {% block content %}{% endblock %}
