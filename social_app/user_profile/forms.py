@@ -6,13 +6,12 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 
 
-class ProfileForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('name', 'email', 'bio')
+        fields = ['name', 'email', 'bio']
 
-
-class ProfileUpdateForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ('name', 'email', 'bio')
+        model = User
+        fields = ['username']

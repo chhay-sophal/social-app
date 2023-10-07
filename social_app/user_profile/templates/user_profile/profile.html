@@ -15,7 +15,7 @@
 
   <div style="margin-left: 10%; margin-right: 10%; text-align: center;">
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Profile</a></button>
-    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Modify Info</a></button>
+    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:profile_update' %}">Modify Info</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Password</a></button>
     <button type="button" class="btn btn-outline-danger"><a class="nav-link" href="{% url 'user_auth:logout' %}" onclick="confirmLogout()">Log Out</a></button>
   </div>
