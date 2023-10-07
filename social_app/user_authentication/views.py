@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView, CreateView, UpdateView
@@ -10,7 +10,7 @@ from .models import Profile
 class RegisterView(CreateView):
     form_class = RegistrationForm
     template_name = 'user_authentication/register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('user_auth:login')
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -25,3 +25,7 @@ class CustomLoginView(LoginView):
     authentication_form = LoginForm
     redirect_authenticated_user = True
     success_url = 'user_profile'
+
+
+class CustomLogoutView(LogoutView):
+    next_page = reverse_lazy('user_auth:login')
