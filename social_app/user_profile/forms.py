@@ -1,0 +1,18 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.models import User
+from user_authentication.models import Profile
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('name', 'email', 'bio')
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('name', 'email', 'bio')
