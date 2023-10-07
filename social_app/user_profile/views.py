@@ -1,11 +1,12 @@
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
+from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from .forms import UserProfileForm, UserForm
+from .forms import UserProfileForm, UserForm, ProfilePictureForm
 from user_authentication.models import Profile
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -41,3 +42,23 @@ class ProfileUpdateView(LoginRequiredMixin, FormView):
         form.instance = profile
         form.save()
         return super().form_valid(form)
+    
+class ChangeProfilePictureView(LoginRequiredMixin, View):
+    form_class = ProfilePictureForm
+    template_name = 'user_profile/change_profile.html'
+    success_url = 'user_profile:profile'
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        profile = user.profile
+        form = self.form_class(instance=profile)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        profile = user.profile
+        form = self.form_class(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        return render(request, self.template_name, {'form': form})

@@ -3,9 +3,15 @@
 {% block content %}
   <div style="margin-left: 25%; margin-right: 25%; text-align: center;">
     {% if profile.profile_picture %}
-        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" style="width: 300px; border-radius: 50%;">
+        {% if profile.profile_picture.width == profile.profile_picture.height %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" style="width: 300px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+        {% else %}
+            <div style="width: 300px; height: 300px; border-radius: 50%; overflow: hidden; display: inline-block; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            </div>
+        {% endif %}
     {% else %}
-        <img src="/media/profile_pictures/default.jpg" alt="Default Picture" style="width: 300px; border-radius: 50%;">
+        <img src="/media/profile_pictures/default.jpg" alt="Default Picture" style="width: 300px; border-radius: 50%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
     {% endif %}
     <h2 style="margin-top: 20px;">{{ profile.user.username }}</h2>
     <p style="margin-top: 10px;">Name: {{ profile.name }}</p>
@@ -14,7 +20,7 @@
   </div>
 
   <div style="margin-left: 10%; margin-right: 10%; text-align: center;">
-    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Profile</a></button>
+    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:change_profile' %}">Change Profile</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:profile_update' %}">Modify Info</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Password</a></button>
     <button type="button" class="btn btn-outline-danger"><a class="nav-link" href="{% url 'user_auth:logout' %}" onclick="confirmLogout()">Log Out</a></button>

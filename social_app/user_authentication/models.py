@@ -18,7 +18,7 @@ class Profile(models.Model):
     
     def save(self, *args, **kwargs):
         force_insert = kwargs.pop('force_insert', False)
-        super().save()
+        super().save(*args, **kwargs)
 
         pic = Image.open(self.profile_picture.path)
 
