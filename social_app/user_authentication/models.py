@@ -10,7 +10,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pictures/',
-        default='default.jpg'
+        default='profile_pictures/default.jpg'
     )
 
     def __str__(self):
