@@ -8,13 +8,14 @@ from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .forms import UserProfileForm, UserForm, ProfilePictureForm
 from user_authentication.models import Profile
+from posts.models import Post
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'user_profile/profile.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile'] = self.request.user.profile
+        context['user'] = self.request.user
         return context
 
     
