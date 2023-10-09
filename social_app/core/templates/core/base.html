@@ -22,7 +22,9 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link {% if request.resolver_match.view_name == 'post:view' %}active{% endif %}" href="#">Post</a>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'posts:post_create' %}active{% endif %}" href="{% url 'posts:post_create' %}">Add Post
+                          <span class="visually-hidden">(current)</span>
+                      </a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link {% if request.resolver_match.view_name == 'friends:view' %}active{% endif %}" href="#">Friends</a>
