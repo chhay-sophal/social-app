@@ -21,9 +21,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
+    path('', include('posts.urls')),
     path('user_auth/', include('user_authentication.urls', namespace='user_auth')),
     path('user_profile/', include('user_profile.urls', namespace='user_profile')),
+    path('posts/', include('posts.urls', namespace='posts')),
 ]
 
 if settings.DEBUG:
