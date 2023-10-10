@@ -15,16 +15,8 @@ class PostListView(LoginRequiredMixin, ListView):
     paginate_by = 10  # Number of posts to display per page
 
     def get_queryset(self):
-        # Get the current user's profile
-        user = self.request.user
-        profile = Profile.objects.get(user=user)
-
-        # Get all posts
-        posts = Post.objects.all()
-        
-        # Get the posts related to the current user's profile
-        # posts = Post.objects.filter(author=profile.user)
-        
+        # Get all posts ordered by created_at in descending order
+        posts = Post.objects.order_by('-created_at')
         return posts
 
 

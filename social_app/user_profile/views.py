@@ -17,7 +17,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         context['user'] = user
-        context['posts'] = user.posts.all()  # Access the posts through the related_name 'posts'
+        context['posts'] = user.posts.order_by('-created_at')
         return context
 
     
