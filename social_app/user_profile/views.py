@@ -15,7 +15,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user
+        user = self.request.user
+        context['user'] = user
+        context['posts'] = user.posts.all()  # Access the posts through the related_name 'posts'
         return context
 
     
