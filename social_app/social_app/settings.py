@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'user_authentication',
     'user_profile',
     'posts',
+    'follows',
     'crispy_forms',
     'crispy_bootstrap5',
 ]

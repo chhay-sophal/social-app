@@ -8,6 +8,7 @@
     {% block style %}{% endblock %}
 </head>
 <body style="padding-top: 120px; padding-bottom: 50px;">
+    <header>
         <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark">
             <div class="container">
               <a class="navbar-brand" href="{% url 'posts:home' %}">Social App</a>
@@ -27,7 +28,19 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a class="nav-link {% if request.resolver_match.view_name == 'friends:view' %}active{% endif %}" href="#">Friends</a>
+                      <a class="nav-link {% if request.resolver_match.view_name == 'follows:user-list' %}active{% endif %}" href="{% url 'follows:user-list' %}">Recommend Users
+                          <span class="visually-hidden">(current)</span>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.resolver_match.view_name == 'follows:following-list' %}active{% endif %}" href="{% url 'follows:following-list' %}">Following
+                          <span class="visually-hidden">(current)</span>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link {% if request.resolver_match.view_name == 'follows:follower-list' %}active{% endif %}" href="{% url 'follows:follower-list' %}">Followers
+                          <span class="visually-hidden">(current)</span>
+                      </a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link {% if request.resolver_match.view_name == 'user_profile:profile' %}active{% endif %}" href="{% url 'user_profile:profile' %}">Profile
@@ -48,7 +61,7 @@
               </div>
             </div>
         </nav>
-    
+    </header>
     <main class="container">
         {% block content %}{% endblock %}
     </main>
