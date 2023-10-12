@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="" style="margin-left: 25%; margin-right: 25%;">
+        <h1>Create a Post</h1>
+        <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div id="image-preview-container" style="display: flex; justify-content: center; align-items: center; max-width: 100%; max-height: 100%; overflow: hidden;">
+            <div id="image-preview"></div> <!-- Container for the image preview -->
+            </div>
+            <button type="submit" class="btn btn-outline-primary" style="margin-top: 20px;">
+            Upload <i class="fas fa-plus"></i>
+            </button>
+        </form>
+    </div>
+  
+    <script>
+        function handleImagePreview(event) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = document.createElement("img");
+            img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const MAX_WIDTH = 800; // Maximum width for the compressed image
+            const MAX_HEIGHT = 800; // Maximum height for the compressed image
+            let width = img.width;
+            let height = img.height;
+    
+            // Resize the image to fit within the maximum dimensions while maintaining aspect ratio
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+                }
+            }
+    
+            canvas.width = width;
+            canvas.height = height;
+    
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+    
+            // Compress the image as a JPEG with a quality of 0.8 (adjust as needed)
+            const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.8);
+    
+            const compressedImg = document.createElement("img");
+            compressedImg.style.maxWidth = "100%";
+            compressedImg.style.maxHeight = "100%";
+            compressedImg.src = compressedDataUrl;
+            document.getElementById("image-preview").innerHTML = "";
+            document.getElementById("image-preview").appendChild(compressedImg);
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+        }
+    
+        document.getElementById("id_image").addEventListener("change", handleImagePreview);
+    </script>
+{% endblock %}

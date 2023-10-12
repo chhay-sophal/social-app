@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'user_authentication',
-    'user_profile',
-    'posts',
-    'follows',
+    'apps.core',
+    'apps.user_authentication',
+    'apps.user_profile',
+    'apps.posts',
+    'apps.follows',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
@@ -62,7 +62,7 @@ ROOT_URLCONF = 'social_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
