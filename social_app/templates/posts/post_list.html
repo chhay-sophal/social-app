@@ -46,19 +46,20 @@
                 <img src="{{ post.image.url }}" alt="Post Image" class="w-100">
                 {% endif %}
                 <p class="m-2">{{ post.created_at }}</p>
+                <p class="like-count m-2" id="like-count-{{ post.id }}">Total Likes: {{ post.likes.count }}</p>
             </div>
             <div class="card-footer">
                 <form class="like-form" data-post-id="{{ post.id }}" action="{% url 'posts:post_like' post.id %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-outline-danger">
                         {% if request.user in post.likes.all %}
-                            Unlike
+                        <i class="fas fa-heart"></i> Unlike
                         {% else %}
-                            Like
+                        <i class="far fa-heart"></i> Like
                         {% endif %}
                     </button>
                 </form>
-                <p class="like-count" id="like-count-{{ post.id }}">Total Likes: {{ post.likes.count }}</p>            </div>
+            </div>
         </div>
         {% empty %}
         <p>No posts found.</p>
@@ -69,33 +70,46 @@
 {% block script %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $(".like-form").on("submit", function(event) {
-            event.preventDefault();
-            var form = $(this);
-            var postId = form.data("post-id");
-            var url = form.attr("action");
-            var data = form.serialize();
+$(document).ready(function() {
+    $(".like-form").on("submit", function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var postId = form.data("post-id");
+        var url = form.attr("action");
+        var data = form.serialize();
 
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                dataType: "json",
-                success: function(response) {
-                    // Update the like count
-                    var likeCountElement = $("#like-count-" + postId);
-                    likeCountElement.text("Total Likes: " + response.like_count);
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            dataType: "json",
+            success: function(response) {
+                // Update the like count
+                var likeCountElement = $("#like-count-" + postId);
+                likeCountElement.text("Total Likes: " + response.like_count);
 
-                    // Update the like/unlike button text
-                    var likeButton = $(".like-form[data-post-id='" + postId + "'] button");
-                    likeButton.text(response.button_text);
-                },
-                error: function(xhr, errmsg, err) {
-                    console.log(xhr.status + ": " + xhr.responseText);
+                // Update the like/unlike button text and icon
+                var likeButton = $(".like-form[data-post-id='" + postId + "'] button");
+                var icon = likeButton.find('i');  // Get the icon element
+
+                // Check the current class of the icon and change it
+                if (icon.hasClass('fas fa-heart')) {
+                    icon.removeClass('fas fa-heart');
+                    icon.addClass('far fa-heart');
+                    likeButton.text(' Like');
+                } else {
+                    icon.removeClass('far fa-heart');
+                    icon.addClass('fas fa-heart');
+                    likeButton.text(' Unlike');
                 }
-            });
+
+                likeButton.prepend(icon);
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
         });
     });
+});
 </script>
 {% endblock %}
