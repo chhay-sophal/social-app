@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import JsonResponse
 from .models import Post, Like
 from apps.user_authentication.models import Profile
 from apps.follows.models import Follow
@@ -50,9 +51,16 @@ class PostLikeView(View):
             # User has already liked the post, handle unlike action
             like = Like.objects.get(user=user, post=post)
             like.delete()
+            liked = False
         else:
             # User has not liked the post, handle like action
             like = Like(user=user, post=post)
             like.save()
+            liked = True
 
-        return redirect('posts:home')
+        response_data = {
+            'like_count': post.likes.count(),
+            'button_text': 'Unlike' if liked else 'Like'
+        }
+
+        return JsonResponse(response_data)

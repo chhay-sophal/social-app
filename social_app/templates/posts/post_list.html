@@ -48,7 +48,7 @@
                 <p class="m-2">{{ post.created_at }}</p>
             </div>
             <div class="card-footer">
-                <form action="{% url 'posts:post_like' post.id %}" method="post">
+                <form class="like-form" data-post-id="{{ post.id }}" action="{% url 'posts:post_like' post.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">
                         {% if request.user in post.likes.all %}
@@ -58,11 +58,44 @@
                         {% endif %}
                     </button>
                 </form>
-                <p>Total Likes: {{ post.likes.count }}</p>
-            </div>
+                <p class="like-count" id="like-count-{{ post.id }}">Total Likes: {{ post.likes.count }}</p>            </div>
         </div>
         {% empty %}
         <p>No posts found.</p>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".like-form").on("submit", function(event) {
+            event.preventDefault();
+            var form = $(this);
+            var postId = form.data("post-id");
+            var url = form.attr("action");
+            var data = form.serialize();
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(response) {
+                    // Update the like count
+                    var likeCountElement = $("#like-count-" + postId);
+                    likeCountElement.text("Total Likes: " + response.like_count);
+
+                    // Update the like/unlike button text
+                    var likeButton = $(".like-form[data-post-id='" + postId + "'] button");
+                    likeButton.text(response.button_text);
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
