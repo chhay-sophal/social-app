@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post
-from user_authentication.models import Profile
+from apps.user_authentication.models import Profile
 from .forms import *
 
 

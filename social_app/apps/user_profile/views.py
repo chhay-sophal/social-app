@@ -7,8 +7,8 @@ from django.views.generic import TemplateView, CreateView, UpdateView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from .forms import UserProfileForm, UserForm, ProfilePictureForm
-from user_authentication.models import Profile
-from posts.models import Post
+from apps.user_authentication.models import Profile
+from apps.posts.models import Post
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'user_profile/profile.html'

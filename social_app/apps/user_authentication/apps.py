@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class UserAuthenticationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'user_authentication'
+    name = 'apps.user_authentication'
