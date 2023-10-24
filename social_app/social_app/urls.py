@@ -21,11 +21,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('posts.urls')),
-    path('user_auth/', include('user_authentication.urls', namespace='user_auth')),
-    path('user_profile/', include('user_profile.urls', namespace='user_profile')),
-    path('posts/', include('posts.urls', namespace='posts')),
-    path('follows/', include('follows.urls', namespace='follows')),
+    path('', include('apps.posts.urls')),
+    path('user_auth/', include('apps.user_authentication.urls', namespace='user_auth')),
+    path('user_profile/', include('apps.user_profile.urls', namespace='user_profile')),
+    path('posts/', include('apps.posts.urls', namespace='posts')),
+    path('follows/', include('apps.follows.urls', namespace='follows')),
 ]
 
 if settings.DEBUG:
