@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from .models import Post
+from .models import Post, Like
 from apps.user_authentication.models import Profile
 from apps.follows.models import Follow
 from .forms import *
@@ -40,3 +40,19 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse('posts:home')
+    
+class PostLikeView(View):
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        user = request.user
+
+        if user in post.likes.all():
+            # User has already liked the post, handle unlike action
+            like = Like.objects.get(user=user, post=post)
+            like.delete()
+        else:
+            # User has not liked the post, handle like action
+            like = Like(user=user, post=post)
+            like.save()
+
+        return redirect('posts:home')

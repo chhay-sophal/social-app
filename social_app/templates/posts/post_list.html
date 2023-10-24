@@ -47,6 +47,19 @@
                 {% endif %}
                 <p class="m-2">{{ post.created_at }}</p>
             </div>
+            <div class="card-footer">
+                <form action="{% url 'posts:post_like' post.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">
+                        {% if request.user in post.likes.all %}
+                            Unlike
+                        {% else %}
+                            Like
+                        {% endif %}
+                    </button>
+                </form>
+                <p>Total Likes: {{ post.likes.count }}</p>
+            </div>
         </div>
         {% empty %}
         <p>No posts found.</p>
