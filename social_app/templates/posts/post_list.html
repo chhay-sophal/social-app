@@ -44,6 +44,7 @@
     .comment-form {
     /* Add styling for the comment form */
     }
+    
     .no-scroll {
     overflow: hidden;
     }
@@ -110,12 +111,12 @@
                 <div class="comments">
                     <!-- Display existing comments here -->
                 </div>
-                <form class="comment-form" data-post-id="{{ post.id }}">
+                <form class="comment-form d-flex justify-content-between align-items-center" data-post-id="{{ post.id }}">
                     {% csrf_token %}
-                    <div class="form-group">
+                    <div class="form-group w-100 me-3">
                         <textarea class="form-control" name="comment-content" rows="3" placeholder="Enter your comment"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Post</button>
                 </form>
             </div>
         </div>
