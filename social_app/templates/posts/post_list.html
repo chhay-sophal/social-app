@@ -8,7 +8,44 @@
         height: 50px;
         border-radius: 50%;
         object-fit: cover;
-        }
+    }
+
+    .comment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    }
+
+    .comment-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 10000;
+    max-height: 80%;
+    overflow-y: auto;
+    }
+
+    .comments {
+    /* Add styling for the comments section */
+    }
+
+    .comment-form {
+    /* Add styling for the comment form */
+    }
+    .no-scroll {
+    overflow: hidden;
+    }
 </style>
 {% endblock %}
 
@@ -63,18 +100,21 @@
                 <button type="button" class="btn btn-outline-primary comment-button" data-post-id="{{ post.id }}">
                     <i class="far fa-comment"></i> Comment
                 </button>
-            </div>
-            <div class="comment-panel" id="comment-panel-{{ post.id }}" style="display: none;">
-                <div class="comments">
-                    <!-- Display existing comments here -->
-                </div>
-                <form class="comment-form" data-post-id="{{ post.id }}">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <textarea class="form-control" name="comment-content" rows="3" placeholder="Enter your comment"></textarea>
+                
+                <div class="comment-overlay" id="comment-overlay"></div>
+                
+                <div class="comment-panel" id="comment-panel-{{ post.id }}" style="display: none;">
+                    <div class="comments">
+                        <!-- Display existing comments here -->
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
+                    <form class="comment-form" data-post-id="{{ post.id }}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <textarea class="form-control" name="comment-content" rows="3" placeholder="Enter your comment"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
         {% empty %}
@@ -129,64 +169,83 @@
     });
     </script>
     <script>
-        $(document).ready(function() {
-            // Show/hide comment panel
-            $('.comment-button').click(function() {
-                var postId = $(this).data('post-id');
-                var commentPanel = $('#comment-panel-' + postId);
-                
-                // Make AJAX request to retrieve comments
-                $.ajax({
-                    url: "{% url 'posts:get_comments' %}",
-                    type: 'GET',
-                    data: { 'post_id': postId },
-                    success: function(response) {
-                        // Update comments section
-                        commentPanel.find('.comments').html(response.comments_html);
-                        
-                        // Show comment panel
-                        commentPanel.toggle();
-                    },
-                    error: function(xhr) {
-                        // Handle error
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
+    $(document).ready(function() {
+        // Show/hide comment panel
+        $('.comment-button').click(function() {
+            var postId = $(this).data('post-id');
+            var commentPanel = $('#comment-panel-' + postId);
+            var commentOverlay = $('#comment-overlay');
 
-            // Submit comment form
-            $('.comment-form').submit(function(event) {
-                event.preventDefault(); // Prevent form submission
+            // Make AJAX request to retrieve comments
+            $.ajax({
+                url: "{% url 'posts:get_comments' %}",
+                type: 'GET',
+                data: { 'post_id': postId },
+                success: function(response) {
+                    // Update comments section
+                    commentPanel.find('.comments').html(response.comments_html);
 
-                var postId = $(this).data('post-id');
-                var commentContent = $(this).find('textarea[name="comment-content"]').val();
-
-                // AJAX request to post comment
-                $.ajax({
-                    url: "{% url 'posts:post_comment' %}",
-                    type: 'POST',
-                    data: {
-                        'post_id': postId,
-                        'content': commentContent,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        // Append new comment to comments section
-                        var commentHtml = '<div class="comment">' +
-                            '<p>' + response.comment.content + '</p>' +
-                            '<p class="comment-info">' + response.comment.created_at + ' by ' + response.comment.user.username + '</p>' +
-                            '</div>';
-                        $('#comment-panel-' + postId + ' .comments').append(commentHtml);
-
-                        // Clear comment textarea
-                        $('#comment-panel-' + postId + ' textarea[name="comment-content"]').val('');
-                    },
-                    error: function(xhr) {
-                        // Handle error
-                        console.log(xhr.responseText);
-                    }
-                });
+                    // Show comment panel and overlay
+                    commentOverlay.show();
+                    commentPanel.show();
+                    // Add CSS class to body element to prevent scrolling of background content
+                    $('body').addClass('no-scroll');
+                },
+                error: function(xhr) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                }
             });
         });
+
+        // Close comment panel when clicking outside of it
+        $('#comment-overlay').click(function(event) {
+            if (event.target === this) {
+                closeCommentPanel();
+            }
+        });
+
+        // Submit comment form
+        $('.comment-form').submit(function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var postId = $(this).data('post-id');
+            var commentContent = $(this).find('textarea[name="comment-content"]').val();
+
+            // AJAX request to post comment
+            $.ajax({
+                url: "{% url 'posts:post_comment' %}",
+                type: 'POST',
+                data: {
+                    'post_id': postId,
+                    'content': commentContent,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Append new comment to comments section
+                    var commentHtml = '<div class="comment">' +
+                        '<p>' + response.comment.content + '</p>' +
+                        '<p class="comment-info">' + response.comment.created_at + ' by ' + response.comment.user.username + '</p>' +
+                        '</div>';
+                    $('#comment-panel-' + postId + ' .comments').append(commentHtml);
+
+                    // Clear comment textarea
+                    $('#comment-panel-' + postId + ' textarea[name="comment-content"]').val('');
+                },
+                error: function(xhr) {
+                    // Handle error
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        // Close comment panel function
+        function closeCommentPanel() {
+            $('.comment-panel').hide();
+            $('#comment-overlay').hide();
+            // Remove CSS class from body element to restore scrolling of background content
+            $('body').removeClass('no-scroll');
+        }
+    });
     </script>
 {% endblock %}
