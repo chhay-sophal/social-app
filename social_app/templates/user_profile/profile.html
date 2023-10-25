@@ -3,6 +3,7 @@
 
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/margin-style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/middle-comment-panel.css' %}">
 {% endblock %}
 {% block content %}
   <div style="margin-left: 25%; margin-right: 25%; text-align: center;">
@@ -47,4 +48,9 @@
     }
   }
 </script>  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/posts-script.js' %}"></script>
+<script>
+    var getCommentsUrl = "{% url 'posts:get_comments' %}";
+</script>
 {% endblock %}
