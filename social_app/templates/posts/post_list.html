@@ -55,18 +55,40 @@
     .no-scroll {
     overflow: hidden;
     }
+
+    @media (min-width: 576px) {
+    .margin-sm, .margin {
+        margin-left: 5%; 
+        margin-right: 5%;
+    }
+    }
+    @media (min-width: 768px) {
+    .margin-md, .margin-sm, .margin {
+        margin-left: 10%; 
+        margin-right: 10%;
+    }
+    }
+    @media (min-width: 992px) {
+    .margin-lg, .margin-md, .margin-sm, .margin {
+        margin-left: 20%; 
+        margin-right: 20%;
+    }
+    }
+    @media (min-width: 1200px) {
+    .margin-xl, .margin-lg, .margin-md, .margin-sm, .margin {
+        margin-left: 25%; 
+        margin-right: 25%;
+    }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="margin-left: 25%; margin-right: 25%;">
+<div class="margin margin-sm margin-md margin-lg">
     <div class="d-flex align-items-center justify-content-between">
       <h1>Home</h1>
       <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'posts:post_create' %}">Add Post <i class="fas fa-plus"></i></a></button>
     </div>
-</div>
-
-<div style="margin-left: 25%; margin-right: 25%;">
     <div>
         {% for post in posts %}
         {% include 'posts/post_card.html' %}
