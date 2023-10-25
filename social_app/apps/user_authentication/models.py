@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.conf import settings
 
 
 class Profile(models.Model):
@@ -29,3 +30,9 @@ class Profile(models.Model):
             output_size = (300, 300)
             pic.thumbnail(output_size)
             pic.save(self.profile_picture.path)
+
+    def get_profile_picture_url(self):
+        if self.profile_picture:
+            return settings.MEDIA_URL + str(self.profile_picture)
+        else:
+            return '/media/profile_pictures/default.jpg'
