@@ -1,7 +1,12 @@
 {% extends 'core/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/margin-style.css' %}">
+{% endblock %}
 
 {% block content %}
-<div style="margin-left: 25%; margin-right: 25%;">
+<div class="margin margin-sm margin-md margin-lg">
   <h1>User List</h1>
 
   {% for user in users %}

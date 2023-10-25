@@ -1,33 +1,9 @@
 {% extends "core/base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block style %}
-<style>
-@media (min-width: 576px) {
-  .margin-sm, .margin {
-    margin-left: 5%; 
-    margin-right: 5%;
-  }
-}
-@media (min-width: 768px) {
-  .margin-md, .margin-sm, .margin {
-    margin-left: 10%; 
-    margin-right: 10%;
-  }
-}
-@media (min-width: 992px) {
-  .margin-lg, .margin-md, .margin-sm, .margin {
-    margin-left: 20%; 
-    margin-right: 20%;
-  }
-}
-@media (min-width: 1200px) {
-  .margin-xl, .margin-lg, .margin-md, .margin-sm, .margin {
-    margin-left: 25%; 
-    margin-right: 25%;
-  }
-}
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/margin-style.css' %}">
 {% endblock %}
 
 {% block content %}
