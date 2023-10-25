@@ -58,8 +58,8 @@
     <div>
         {% for post in posts %}
         <div class="card mt-3 mb-3">
-            <div class="post">
-                <div class="m-3">
+            <div class="card-body pb-0">
+                <div class="">
                     {% with post.author.profile as profile %}
                     <div style="display: flex; align-items: center;">
                         {% if profile.profile_picture %}
@@ -79,14 +79,14 @@
                     </div>
                     {% endwith %}
                 </div>
-                <p class="m-3">{{ post.content }}</p>
+                <p class="my-2">{{ post.content }}</p>
                 {% if post.image %}
                 <img src="{{ post.image.url }}" alt="Post Image" class="w-100">
                 {% endif %}
-                <p class="m-2">{{ post.created_at }}</p>
-                <p class="like-count m-2" id="like-count-{{ post.id }}">Total Likes: {{ post.likes.count }}</p>
+                <p class="mb-2">{{ post.created_at }}</p>
+                <p class="mb-2" id="like-count-{{ post.id }}">Total Likes: {{ post.likes.count }}</p>
             </div>
-            <div class="card-footer d-flex justify-content-between align-items-center">
+            <div class="card-footer d-flex justify-content-between align-items-center pt-0">
                 <form class="like-form" data-post-id="{{ post.id }}" action="{% url 'posts:post_like' post.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-outline-danger">
