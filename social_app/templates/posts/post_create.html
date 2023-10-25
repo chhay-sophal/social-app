@@ -1,8 +1,37 @@
 {% extends "core/base.html" %}
 {% load crispy_forms_tags %}
 
+{% block style %}
+<style>
+@media (min-width: 576px) {
+  .margin-sm, .margin {
+    margin-left: 5%; 
+    margin-right: 5%;
+  }
+}
+@media (min-width: 768px) {
+  .margin-md, .margin-sm, .margin {
+    margin-left: 10%; 
+    margin-right: 10%;
+  }
+}
+@media (min-width: 992px) {
+  .margin-lg, .margin-md, .margin-sm, .margin {
+    margin-left: 20%; 
+    margin-right: 20%;
+  }
+}
+@media (min-width: 1200px) {
+  .margin-xl, .margin-lg, .margin-md, .margin-sm, .margin {
+    margin-left: 25%; 
+    margin-right: 25%;
+  }
+}
+</style>
+{% endblock %}
+
 {% block content %}
-    <div class="" style="margin-left: 25%; margin-right: 25%;">
+    <div class="margin margin-sm margin-md margin-lg">
         <h1>Create a Post</h1>
         <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
             {% csrf_token %}
