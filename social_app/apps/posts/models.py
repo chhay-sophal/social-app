@@ -10,6 +10,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', through='Like')
+    comments = models.ManyToManyField(User, related_name='commented_posts', through='Comment')
 
     def __str__(self):
         return f"Post #{self.id} by {self.author.username}"
