@@ -1,14 +1,18 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Post, Like
+from .models import Post, Like, Comment
 from apps.user_authentication.models import Profile
 from apps.follows.models import Follow
 from .forms import *
+from .serializers import CommentSerializer
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class PostListView(LoginRequiredMixin, ListView):
@@ -42,6 +46,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('posts:home')
     
+
 class PostLikeView(View):
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
@@ -64,3 +69,24 @@ class PostLikeView(View):
         }
 
         return JsonResponse(response_data)
+
+
+class PostCommentView(APIView):
+    def post(self, request):
+        post_id = request.data.get('post_id')
+        content = request.data.get('content')
+        # Create the comment
+        comment = Comment.objects.create(post_id=post_id, user=request.user, content=content)
+        # Serialize the comment
+        serializer = CommentSerializer(comment)
+        # Return the serialized comment as JSON response
+        return Response({'comment': serializer.data})
+    
+    
+class GetCommentsView(APIView):
+    def get(self, request):
+        post_id = request.GET.get('post_id')
+        comments = Comment.objects.filter(post_id=post_id)
+        serialized_comments = CommentSerializer(comments, many=True).data
+        comments_html = render_to_string('posts/comments.html', {'comments': serialized_comments})
+        return Response({'comments_html': comments_html})
