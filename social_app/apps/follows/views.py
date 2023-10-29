@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, View
 from django.shortcuts import render, redirect
@@ -29,20 +30,26 @@ class FollowingListView(LoginRequiredMixin, ListView):
     model = Follow
     template_name = 'follows/following_list.html'
     context_object_name = 'following'
+    extra_context = {}
 
     def get_queryset(self):
         current_user = self.request.user
-        return Follow.objects.filter(from_user=current_user)
+        queryset = Follow.objects.filter(from_user=current_user)
+        self.extra_context['following_count'] = queryset.count()
+        return queryset
     
 
 class FollowerListView(LoginRequiredMixin, ListView):
     model = Follow
     template_name = 'follows/follower_list.html'
     context_object_name = 'followers'
+    extra_context = {}
     
     def get_queryset(self):
         current_user = self.request.user
-        return Follow.objects.filter(to_user=current_user)
+        queryset = Follow.objects.filter(to_user=current_user)
+        self.extra_context['followers_count'] = queryset.count()
+        return queryset
     
 
 class FollowUserView(LoginRequiredMixin, View):
