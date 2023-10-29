@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView, CreateView, UpdateView
@@ -29,3 +29,7 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     next_page = reverse_lazy('user_auth:login')
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = "user_authentication/password_change.html"
+    success_url = reverse_lazy('user_auth:logout')

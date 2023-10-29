@@ -35,7 +35,7 @@
   <div style="text-align: center;">
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:change_profile' %}">Change Profile</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:profile_update' %}">Modify Info</a></button>
-    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Password</a></button>
+    <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:password-change' %}">Change Password</a></button>
     <button type="button" class="btn btn-outline-danger"><a class="nav-link" id="logout-button" href="{% url 'user_auth:logout' %}" onclick="confirmLogout()">Log Out</a></button>
   </div>
 
