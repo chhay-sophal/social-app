@@ -22,8 +22,6 @@ class RegisterView(CreateView):
 
 class CustomLoginView(LoginView):
     template_name = 'user_authentication/login.html'
-    authentication_form = LoginForm
-    redirect_authenticated_user = True
     success_url = 'user_profile'
 
 
