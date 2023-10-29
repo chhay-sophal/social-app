@@ -16,7 +16,7 @@
         {% for post in posts %}
         {% include 'posts/post_card.html' %}
         {% empty %}
-        <p>No posts found.</p>
+        <h1 style="text-align: center; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">No posts found!</h1>
         {% endfor %}
     </div>
 {% endblock %}
