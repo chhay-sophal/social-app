@@ -4,6 +4,14 @@
 {% block style %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/margin-style.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'css/middle-comment-panel.css' %}">
+<style>
+    .logout-card{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
 {% endblock %}
 {% block content %}
   <div style="margin-left: 25%; margin-right: 25%; text-align: center;">
@@ -28,7 +36,18 @@
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:change_profile' %}">Change Profile</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_profile:profile_update' %}">Modify Info</a></button>
     <button type="button" class="btn btn-outline-primary"><a class="nav-link" href="{% url 'user_auth:logout' %}">Change Password</a></button>
-    <button type="button" class="btn btn-outline-danger"><a class="nav-link" href="{% url 'user_auth:logout' %}" onclick="confirmLogout()">Log Out</a></button>
+    <button type="button" class="btn btn-outline-danger"><a class="nav-link" id="logout-button" href="{% url 'user_auth:logout' %}" onclick="confirmLogout()">Log Out</a></button>
+  </div>
+
+  <div id="confirm-card" class="modal card text-white bg-warning mb-3 logout-card" style="max-width: 370px; height: 220px;">
+    <div class="card-header">
+        <h3 class="mb-0">Confirm Log Out</h3>
+    </div>
+    <div class="card-body">
+        <h5 class="mb-4">Are you sure you want to log out?</h5>
+        <button type="button" class="btn btn-outline-danger" id="back-button">Back</button>
+        <button type="button" class="btn btn-outline-danger" id="confirm-logout-button">Log out</button>
+    </div>
   </div>
 
   <div class="margin margin-sm margin-md margin-lg">
@@ -42,12 +61,21 @@
 
 {% block script %}
 <script>
-  function confirmLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-      window.location.href = "{% url 'user_auth:logout' %}";
-    }
-  }
-</script>  
+    var logoutButton = document.getElementById("logout-button");
+    var confirmCard = document.getElementById("confirm-card");
+    var backButton = document.getElementById("back-button");
+    var confirmLogoutButton = document.getElementById("confirm-logout-button");
+    logoutButton.addEventListener("click", function(event) {
+      event.preventDefault();
+      confirmCard.style.display = "block";
+    });
+    backButton.addEventListener("click", function() {
+      confirmCard.style.display = "none";
+    });
+    confirmLogoutButton.addEventListener("click", function() {
+      window.location.href = logoutButton.href;
+    });
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   $(document).ready(function() {
