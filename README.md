@@ -23,26 +23,14 @@ Install the requirements library
 pip install -r requirements.txt
 ```
 
-## Create Database 
-In this case we use MySQL server.
-Go to MySQL Workbench 8.0 CE, and create new database name 'social_app'. 
-Go to social_app/social_app/settings.py and navigate to DATABASE part
+## Migrate 
+Run the following command to migrate database
 ```
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+python manage.py migrate
+```
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'social_app',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': 3306,
-        'OPTIONS': {
-            'sql_mode': 'STRICT_TRANS_TABLES',
-        },
-    },
-}
+## Runserver
+To run the server:
 ```
-If you create new database with different name, change the 'NAME': 'social_app' to 'NAME': '<YOUR_DATABASE_NAME>'
+python manage.py runserver
+```
